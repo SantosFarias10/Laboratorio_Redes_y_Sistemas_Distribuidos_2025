@@ -454,3 +454,163 @@ Tipos de datos de PHP:
 * `boolean`: Valores booleanos (true o false).
 * `array`: Arreglo que almacena varios valores en una variable.
 * `object`: PHP permite definir clases y objetos.
+
+---
+
+# Capa de Aplicacion de Redes Blockchain
+
+## Capa de Protocolo Base de Redes Blockchain
+
+### Requisitos
+
+* **Registro de Transacciones**: Capacidad de almacenar transacciones.
+* **Consistencia de Estado del Sistema**: Todos los participantes deben tener una vision unificada del estado actual del sistema.
+* **Descentralizacion**: Queremos que el registro opere sin una autoridad central que controle el sistema.
+* **Inmutabilidad**: Una vez que las transacciones se agregan al registro, no pueden ser modificados ni eliminados.
+* **Seguridad**: Los datos del registro deben estar protegidos contra alternaciones y accesos no autorizados.
+* **Transparencia**: Todos los participantes deben poder ver y verificar las transacciones y los datos en el registro.
+* **Consenso**: Los nodos de la red deben acordar la validad de grupos de transacciones antes de agregarlas al registro.
+* **Escalabilidad**: El sistema debe ser robusto y capaz de recuperarse rapidamente frente a fallas o ataques.
+* **Privacidad**: Debe garantizarse la confidencialidad de ciertos datos y transacciones cuando sea necesario.
+
+### Cadenas de Bloques
+
+Es una estructura de datos descentralizada y cronologica que almacena infomracion en forma de bloques. Cada bloque contiene un conjunto de transacciones. Se tiene un **Red de Nodos Distribuidos** donde cada nodo tiene una copia completa de la blockchain.
+<br>El **Hash de un Bloque** es un identificador unico del bloque generado mediante un algoritmo criptografico. Funciona como una "huella digital" del bloque y cambia si se modifica cualquier dato del bloque. Un *hash* hace extremadamente dificil alterar un bloque sin ser detectado. Los bloques de una cadena de bloques estan enlazados mediante ***Hashes***.
+
+La **Estructura de un Bloque** es la siguiente:
+* **Encabezado del Bloque**: Contiene metadatos cruciales para la integridad y verificacion.
+* **Cuerpo del Bloque**: Almacena las transacciones realizadas.
+* **Hash del Bloque**: Generado a partir de todos los datos contenidos en el bloque. Este *hash* garantiza que cualquier cambio resultaria en un nuevo valor completamente diferente, protegiendo asi la integridad e inmutabilidad del registro blockchain.
+
+El **Encabezado del Bloque** contiene los siguientes datos:
+* **Hash del Bloque Anterior**.
+* ***Merkle Root***: Es el *hash* que resume todas las transacciones dentro del bloque.
+* ***Nonce***: Numero aleatorio usado durante el proceso de mineria para encontrar un *hash* valido.
+* ***TimeStamp***: Marca temporal indicando cuando se creo el bloque. Proporciona orden cronologico de los bloques.
+
+¿Como se logran los requisitos?
+* **Distribucion**: Uso de varios nodos con copia de blockchain.
+* **Inmutabilidad**: Los bloques no pueden alterarse una vez agregados a la blockchain, cualquier cambio seria detectable porque alteraria el *hash* del bloque.
+* **Transparencia**: Todas las transacciones son visibles publicamente.
+* **Consenso**: Por medio de los mecanismos de consenso.
+* **Rendimiento**: La eficiencia en la creacion de bloques y la validacion de transacciones depende de la implementacion especifica de la blockchain y su algoritmo de consenso.
+* **Privacidad**: Se pueden implementar mecanismos para la privacidad.
+* **Seguridad**: Se emplean algoritmos criptograficos para proteger los datos y las transacciones.
+* **Consistencia**: Mediante mecanismos de consenso todos los nodos acuerdan que bloque es el siguiente en añadirse a la cadena.
+
+### Mecanismos de Consenso
+
+Los principales mecanismos de consenso son:
+* ***Delegated Proof of Stake*** (**DPoS**): Los usuarios votan por delegados para validar bloques; estos delegados reciben recompensas por su trabajo. Los delegados pueden validar y agregar nuevas transacciones a la blockchain. Esto incluye validacion de bloques y confirmacion de transacciones. DPoS es rapido y eficiente.
+* ***Byzantine Fault Tolerance*** (**BFT**): Un lider propone nuevos bloques mientras otros nodos verifican su validez antes del consenso generalizado. Luego de la validacion, se hace una votacion se hace una votacion por nodos participantes del consenso, para determinar si aceptan o rechazan el bloque propuesto.
+
+### Bitcoin
+
+#### Caracteristicas
+* **Blockchain Publica**: Cualquiera puede unirse a la red, ejecutar un nodo y verificar transacciones.
+* ***Permissionless***: No requiere permisos para participar como usuario, minero o nodo.
+* Bitcoin usa el mecanismo de consenso **Proof of Work**.
+* **Oferta Limitada**.
+* Las transacciones suelen resolverse en minutos, aunque pueden tardar mas dependiendo de la congestion de la red.
+* **Estructura de incentivos**: Los mineros reciben recompensas en BTC y tarifas de transaccion para mantener la red segura y operativa.
+* **Tiempo de Bloque**: Aproximadamente 10 minutos en promedio para minar un nuevo bloque.
+
+#### Servicios Provistos
+* **Transferencia de Valor**: Permite enviar y recibir bitcoins de manera rapida y segura entre pares, sin intermediarios.
+* **Almacenamiento de Valor**: Debido a su oferta limitada y su seguridad, es considerado como una reserva de valor .
+* **Pagos Internacionales**: Facilita pagos internacionales con menores costos y tiempos de procesamiento comparado con los metodos tradicionales.
+* **Seguridad y Verficacion de Transacciones**: Usa un sistema publico y transparente para evitar fraudes y doble gastos.
+* **Bitcoin Script**: Soporta contratos inteligentes basicos a traves de su lenguaje de scripting, auntque con restricciones para mantener la seguridad.
+
+#### Claves
+
+Cada usuario tiene un par de claves:
+* **Clave Privada** Secreta: Se genera un numero aleatorio. Generalmente las billeteras digitales generan esta clave.
+* **Clave Publica** Compartida en la Red: Se aplica una formula matematica a la clave privada para generar esta clave. Generalmente se usa para ello el algoritmo ECDSA.
+
+#### Funcion Hash
+
+Una funcion hash es un algoritmo matematico que transforma datos de entrada de longitud variable en una cadena alfanumerica fija y unica, conocida como codigo hash.
+<br>Las propiedades de una funcion hash son:
+* **Determinismo**: Una funcion de hash produce siempre el mismo resultado para una entrada dada.
+* **Eficiencia**: Las funciones de hash deben ser rapidas para calcular.
+* **Resistencia a Colisiones**: Es practicamente imposible encontrar entradas diferentes que produzcan el mismo codigo hash.
+
+#### Mineria de Bitcoin
+
+**SHA-256** (***Secure Hash Algorithm 256-bit***) es un tipo especifico de funcion hash criptografica que se usa en Bitcoin y produce un codigo de hash de 256 bits.
+
+Asi se usa SHA-256 en la mineria de Bitcoin:
+1. Los mineros agrupan las transacciones pendientes en un **Bloque Candidatoa**.
+2. Se crea el **Encabezado del Bloque**. El mismo contiene hash del bloque anterior, raiz de Merkle, marca de tiempo actual, nonce. El **Nonce** es un numero de 32 bits que se modifica repetidamente durante el proceso de mineria.
+3. Se aplica el Algoritmo SHA-256 dos veces al encabezado del bloque.
+4. Si el hash obtenido no cumple con los requisitos de dificultad establecidos por la red, el nonce se incrementa aleatoriamente y se repite el proceso hasta encontrar un hash valido. Para ser valido debe cumplir; el doble hash SHA-256 del bloque completo debe tener un numero especifico de ceros iniciales.
+5. Una vez encontrado un hash valido, el minero difunde el nuevo bloque a la red.
+6. Los nodos verifican el trabajo realizado y añaden el bloque a la blockchain.
+7. Los otros nodos mineros que estaban tratando de crear sus bloques validos pierden el trabajo realizado hasta ese momento.
+8. El minero recibe una recompensa en bitcoins por su trabajo, asi como las tarifas de las transacciones incluidos en el bloque.
+
+Si dos nodos mineros generan un bloque valido al mismo tiempo, ¿Como evitar que se generen blockchains diferentes?
+<br>Diferentes nodos reciben uno u otro bloque y lo añaden a su copia local de la blockchain. El siguiente minero en encontrar un bloque valido lo añadira a la cadena que esta usando. La cadena que se extiende mas rapido que se convierte en la principal. El bloque que no fue extendido se convierte en un bloque huerfano y es descartado. Los nodos que tenian la cadena mas corta abandonan esa cadena y se pasan a la cadena mas larga. El minero cuyo bloque se convierte en huerfano no recibe la recompensa por su trabajo.
+
+#### Firmas Digitales
+
+Una **Firma Digital** se genera en funcion de los datos de una transaccion, la firma es unica para cada transaccion. La clave privada del usuario es usada para firmar transacciones y demostrar la propiedad de los bitcoins. La clave publica es usada para verificar la firma. El remitente crea un hash de la transaccion y lo cifra con su clave privada, produciendo la firma digital.
+<br>**Verificacion de la Firma**: Los nodos de la red utilizan la clave publica del remitente para descifrar la firma y compara el hash resultante con el de la transaccion. Si coinciden, la firma es valida.
+
+#### Tipos de Nodos
+
+* **Nodos Completos**: Validan y transmiten transacciones y bloques. Mantienen copia completa de la blochchain.
+* **Nodos Mineros**: Crean nuevos bloques a traves de la mineria.
+* **Nodos Ligeros**: Verifican transacciones usando informacion resumida. Obtienen informacion necesaria de nodos completos. Consultan saldos, envian y reciben BTC (Criptomoneda de Bitcoin).
+* **Supernodos**: Actuan como hubs de alta capacidad, conectandose a muchos otros nodos y facilitando la distribucion de datos.
+
+#### Envio y Validacion de Transacciones
+
+1. **Usuario** envia transaccion a nodo completo.
+2. **Nodo completo** verifica la validez de la transaccion recibida. Luego difunde la transaccion a otros nodos completos y supernodos.
+3. **Supernodo** retransmite transaccion recibida de nodo completo a muchos otros nodos completos y ligeros a los que esta conectado.
+4. **Nodo Ligero** recibe transaccion de supernodo, la verifica usando la informacion resumida, si la verificacion es exitosa, la acepta.
+5. **Nodo Ligero** recibe la transaccion del nodo completo o supernodo. Incluye la transaccion en un bloque candidato y empieza a minar.
+6. **Nodo Completo y Supernodo** continuan propagando la transaccion a otros nodos en la red hasta que todos la hayan recibido.
+
+#### Mineria y Propagacion de un Nuevo Bloque
+
+1. **Nodo de Mineria** Resuelve un problema matematico criptografico y crea un nuevo bloque con las transacciones recientes. Difunde el nuevo bloque a un nodo completo.
+2. **Nodo Completo** verifica la validez del bloque recibido. Si el bloque es valido, lo agrga a su blockchain. Diifunde el bloque a otros nodos completos y supernodos.
+3. **Supernodos** recibe y verifica el bloque que recibio del nodo completo, y si todo esta bien lo añade a su copia de la blockchain. Retransmite el bloque a muchos otros nodos completos y ligeros a los que esta conectado.
+4. **Nodo Ligero** recibe el bloque del supernodo y verifica el bloque usando la cabecera del mismo y la cadena de bloque resumida. Si es valido, almacena su informacion resumida.
+
+#### Respuesta a un Ataque de Doble Gasto
+
+1. **Usuario Malicioso** envia dos transacciones conflictivas a diferentes nodos completos.
+2. **Nodo Completo 1** recibe la primera transaccion y la verifica. Difunde esa transaccion a otros nodos completos y supernodos.
+3. **Nodo Completo 2** recibe la segunda transaccion conflictiva y la verifica. Detecta el conflicto con la primera transaccion; rechaza la segunda transaccion y no la difunde.
+4. **Supernodos** recibe la transaccion valida del nodo completo 1 y la difunde a otros nodos.
+5. **Nodos de Mineria** recibe la primera transaccion valida y la incluye en un bloque candidato. Si la segunda transaccion llega despues de la primera, y se detecta el conflicto, la segunda transaccion es rechazada.
+
+![](../Teorico/Imagenes/bitcoin.png)
+
+### Ethereum
+
+La red Ethereum fue diseñada para descentralizar la web y permitir la creacion de Aplicaciones Descentralizadas (DApps) y contratos inteligentes.
+<br>Su objetivo principal es eliminar intermediarios y proporcionar una plataforma transaparente, segura y autonoma para transacciones y acuerdos digitales.
+
+#### Caracteristicas
+
+* **Contratos Inteligentes**: Codigos autoejecutables que se activan cuando se cumplen condiciones predefindidas. Elimina la necesidad de confianza entre partes y reducen costos de intermediacion.
+* **Descentralizacion**: Opera mediante una red global de nodos que validan y registran transacciones sin una autoridad central.
+* **Token Nativo** (Ether - ETH): Utilizando como "combustible" para pagar transacciones y ejecutar contratos inteligentes.
+* Maquina Virtual Ethereum (EVM): Proporciona un entorno seguro para ejecutar contratos inteligentes.
+* **Inmutabilidad y Transparencia**: Todas las transacciones y contratos son registrados en la blockchain, lo que los hace verificables y resistentes a alteraciones.
+
+#### Servicios Provistos
+
+* **Desarrollo de DApps**: Permite a los desarrolladores crear aplicaciones descentralizadas.
+* **Tokens Personalizados**: Facilita la creacion de tokens para representar activos digitales o fisicos.
+* **Finanzas Descentralizadas** (**DeFi**): Plataforma para servicios financieros como prestamos, intercambios y seguros sin intermediarios.
+* **Mercados Descentralizados**: Permite la creacion de plataformas de comercio P2P para bienes digitales y fisicos.
+* **Gestion de Identidad y Datos**: Ofrece soluciones para almacenar y compartir datos de forma segura y descentralizada.
+
+# FALTA TERMINAR LA CAPA DE APLICACION DE REDES BLOCKCHAIN
